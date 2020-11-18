@@ -7,8 +7,8 @@ For more information see (https://github.com/eclipse/paho.mqtt.python)
 ## Prerequisites
 
 MQTT broker running:   
-    ..* on a local machine   
-    ..* in a cloud environment
+⋅⋅* on a local machine   
+⋅⋅* in a cloud environment
 
 Paho MQTT python library  
 ```pip install paho-mqtt```
