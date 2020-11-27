@@ -47,6 +47,10 @@ class MQTT_Client(object):
     def subscribe(self, topic, qos):
         """ Subscribe to a given topic. """
         self.mqttc.subscribe(topic, qos)
+    
+    def unsubscribe(self, topic):
+        """ Unsubscribe to a given topic. """
+        self.mqttc.unsubscribe(topic)
 
 def on_connect(mqtcc, obj, flags, rc):
     """ Called when the broker responds to our connection request. """
@@ -65,8 +69,11 @@ def on_publish(mqtcc, obj, mid):
 
 def on_subscribe(mqtcc, obj, mid, granted_qos):
     """ Called when the broker responds to a subscribe request. """
-    print("Subscribed: " + str(obj) + " " + str(granted_qos))
+    print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
+def on_unsubscribe(mqtcc, obj, mid):
+    """ Called when the broker responds to an unsubscribe request. """
+    print("Unsubscribed: " + str(mid))
 
 def on_log(mqtcc, obj, level, string):
     """ Called when the client has log information. Defined to allow debugging. """
@@ -127,6 +134,7 @@ def create_MQTT_Client(args):
     mqttc.on_connect = on_connect
     mqttc.on_publish = on_publish
     mqttc.on_subscribe = on_subscribe
+    mqttc.on_unsubscribe = on_unsubscribe
 
     if args.debug:
         mqttc.on_log = on_log
