@@ -34,10 +34,11 @@ class MQTT_Client(object):
         Publish message to broker.
 
         Args:
+            topic (str): topic to publish message
+            qos (int): quality of service level (0,1 or 2)
             msg (str): message to send.
         
         Returns:
-
         """
         infot = self.mqttc.publish(topic, msg, qos)
         infot.wait_for_publish()
@@ -45,27 +46,33 @@ class MQTT_Client(object):
         time.sleep(self.delay)
     
     def subscribe(self, topic, qos):
-        """ Subscribe to a given topic. """
+        """ 
+        Subscribe to a given topic.
+        
+        Args:
+            topic (str): topic to subscribe to
+            qos (int): quality of service level (0,1 or 2)
+        """
         self.mqttc.subscribe(topic, qos)
     
     def unsubscribe(self, topic):
-        """ Unsubscribe to a given topic. """
+        """ Unsubscribe to a given topic. 
+        Args:
+            topic (str): topic to subscribe to
+        """
         self.mqttc.unsubscribe(topic)
 
 def on_connect(mqtcc, obj, flags, rc):
     """ Called when the broker responds to our connection request. """
     print("connect rc: " + str(rc))
 
-
 def on_message(mqtcc, obj, msg):
     """ Called when a message has been received on a topic that the client subscribes to. """
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
 
-
 def on_publish(mqtcc, obj, mid):
     """ Called when a message that was to be sent using the publish method has completed transmission to the broker. """
     print("mid: " + str(mid))
-
 
 def on_subscribe(mqtcc, obj, mid, granted_qos):
     """ Called when the broker responds to a subscribe request. """

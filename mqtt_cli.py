@@ -37,7 +37,7 @@ mqttc = MQTT_Client(args)
 
 """ Process according client mode. """
 topic = args.topic
-qos = args.qos
+qos = args.qos # quality of service level can be (0,1 or 2)
 
 if args.subscribe and not args.publish:
     #If more than one topic, use the method subscribe as many times as needed
