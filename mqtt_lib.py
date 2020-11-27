@@ -14,7 +14,7 @@ class MQTT_Client(object):
         args (argparse): Command Line Arguments.
     """
     def __init__(self, args):
-        self.args = args
+        self.delay = args.delay
         self.mqttc = create_MQTT_Client(args)
 
     def loop_start(self):
@@ -29,7 +29,7 @@ class MQTT_Client(object):
         """ Infinite blocking loop to process network traffic. """
         self.mqttc.loop_forever()
     
-    def publish(self, msg):
+    def publish(self, topic, qos, msg):
         """
         Publish message to broker.
 
@@ -39,14 +39,14 @@ class MQTT_Client(object):
         Returns:
 
         """
-        infot = self.mqttc.publish(self.args.topic, msg, qos=self.args.qos)
+        infot = self.mqttc.publish(topic, msg, qos)
         infot.wait_for_publish()
 
-        time.sleep(self.args.delay)
+        time.sleep(self.delay)
     
-    def subscribe(self):
+    def subscribe(self, topic, qos):
         """ Subscribe to a given topic. """
-        self.mqttc.subscribe(self.args.topic, self.args.qos)
+        self.mqttc.subscribe(topic, qos)
 
 def on_connect(mqtcc, obj, flags, rc):
     """ Called when the broker responds to our connection request. """
@@ -65,7 +65,7 @@ def on_publish(mqtcc, obj, mid):
 
 def on_subscribe(mqtcc, obj, mid, granted_qos):
     """ Called when the broker responds to a subscribe request. """
-    print("Subscribed: " + str(mid) + " " + str(granted_qos))
+    print("Subscribed: " + str(obj) + " " + str(granted_qos))
 
 
 def on_log(mqtcc, obj, level, string):

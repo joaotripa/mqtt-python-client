@@ -36,9 +36,12 @@ args, unknown = parser.parse_known_args()
 mqttc = MQTT_Client(args)
 
 """ Process according client mode. """
+topic = args.topic
+qos = args.qos
 
 if args.subscribe and not args.publish:
-    mqttc.subscribe()
+    #If more than one topic, use the method subscribe as many times as needed
+    mqttc.subscribe(topic, qos)
     mqttc.loop_forever()
 elif args.publish and not args.subscribe:
     mqttc.loop_start()
@@ -48,7 +51,7 @@ elif args.publish and not args.subscribe:
         #msg_txt = '{"msgnum": "'+str(x)+'"}'
         msg_txt = args.message
         print("Publishing: "+msg_txt)
-        mqttc.publish(msg_txt)   
+        mqttc.publish(topic, qos, msg_txt)   
 
     mqttc.disconnect()
 else:

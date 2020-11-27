@@ -38,9 +38,11 @@ Paho MQTT python library
 
 ## Running as Subscriber
 
+If running mqtt locally use the 127.0.0.1 address, else use the correct mqtt broker address
 ```python3 mqtt_cli.py -sub -H 127.0.0.1 -t test/topic```
 
 ## Running as Publisher
 
+If running mqtt locally use the 127.0.0.1 address, else use the correct mqtt broker address
 ```python3 mqtt_cli.py -pub -H 127.0.0.1 -t test/topic -m "Hello World!" ```
 
